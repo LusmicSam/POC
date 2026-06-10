@@ -8,3 +8,5 @@ pymupdf
 imagehash
 python-dotenv
 openai
+pandas
+nest-asyncio

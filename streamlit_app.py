@@ -34,6 +34,27 @@ except ImportError:
     fitz = None
 
 # ─────────────────────────────────────────────────────────────────────────────
+#  Auto-start FastAPI backend (runs once per Streamlit Cloud process)
+# ─────────────────────────────────────────────────────────────────────────────
+import threading as _threading
+
+_BACKEND_STARTED = False
+
+def _launch_backend() -> None:
+    global _BACKEND_STARTED
+    _BACKEND_STARTED = True
+    try:
+        import nest_asyncio as _nest; _nest.apply()
+        import uvicorn as _uvi
+        import mineru_server as _ms
+        _uvi.run(_ms.app, host="127.0.0.1", port=8000, log_level="error")
+    except Exception:
+        pass
+
+if not _BACKEND_STARTED:
+    _threading.Thread(target=_launch_backend, daemon=True).start()
+
+# ─────────────────────────────────────────────────────────────────────────────
 #  Config
 # ─────────────────────────────────────────────────────────────────────────────
 DEFAULT_ENDPOINT = os.getenv("DOCEXTRACT_BRIDGE_URL", "http://127.0.0.1:8000")
