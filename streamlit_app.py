@@ -614,10 +614,13 @@ def render_sidebar() -> None:
             cost    = vs.get("cost_usd", 0.0)
             calls   = vs.get("llm_calls", 0)
             hits    = vs.get("cache_hits", 0)
+            _cached_part = (
+                f' 🔒 cached: <b style="color:#34d399">{cached:,}</b>' if cached else ""
+            )
             st.markdown(
                 f'<div style="font-size:11px;color:#8fa3c0;line-height:1.7;">'
                 f'📥 In: <b style="color:#a5b4fc">{tok_in:,}</b> tok'
-                f'{"  🔒 cached: <b style=\\"color:#34d399\\">" + f"{cached:,}" + "</b>" if cached else ""}<br>'
+                f'{_cached_part}<br>'
                 f'📤 Out: <b style="color:#f9a8d4">{tok_out:,}</b> tok<br>'
                 f'🔁 Calls: <b style="color:#e4eaf5">{calls}</b>  ⚡ Cache hits: <b style="color:#34d399">{hits}</b><br>'
                 f'💵 Est. cost: <b style="color:#fbbf24;font-size:13px">${cost:.4f}</b> USD'
